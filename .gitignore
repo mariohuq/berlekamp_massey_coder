@@ -1,0 +1,15 @@
+# Ignore everything
+*
+
+# But not .gitignore
+!.gitignore
+
+# and not python src-es
+!*.py
+
+# and not poetry stuff
+!pyproject.toml
+!README.md
+
+# even if they are in subdirectories
+!*/
