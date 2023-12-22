@@ -3,6 +3,8 @@ from . import help_gf
 
 
 def rs_generator_poly(red_code_len):
+    # red_code_len - количество символов, представляющих избыточный код
+    # вычисляет многочлен генератора для заданного числа избыточных символов
     g = [1]
     temp = [1, 0]
 
@@ -14,6 +16,9 @@ def rs_generator_poly(red_code_len):
 
 
 def rs_encode_msg(msg_in, red_code_len):
+    # msg_in - входящее сообщение, представленное вектором многочленов (в данном случае целых чисел)
+    # red_code_len - количество символов, представляющих избыточный код
+    # возвращаемое закодированное сообщение = вектор [msg_in] + [избыточная информация] (в данном случае целые числа)
     if len(msg_in) + red_code_len >= 256:
         raise ValueError("The total number of characters - messages + redundant code - exceeds 256")
 
