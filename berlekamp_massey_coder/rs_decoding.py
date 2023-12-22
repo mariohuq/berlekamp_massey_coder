@@ -67,7 +67,7 @@ def rs_correct_errata(msg_in, synd, err_pos):
 
         # Находит формальную производную полинома локатора ошибок
         # формальная производная от локатора ошибок используется в качестве знаменателя алгоритма Форни,
-        # который говорит, что i-е значение ошибки задается error_evaluator(gf_inverse(Xi)) / error_locator_derivative(gf_inverse(Xi)).
+        # который говорит, что i-е значение ошибки задается error_evaluator(gf.inverse(Xi)) / error_locator_derivative(gf.inverse(Xi)).
         err_loc_prime_tmp = [gf.sub(1, gf.mult(x_i_inv, x[j])) for j in range(len(x)) if j != i]
 
         # многочлен ошибки Yi = W(Xi ^(-1))/L'(Xi ^(-1))
