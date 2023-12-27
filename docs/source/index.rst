@@ -17,10 +17,10 @@ Contents
 .. toctree::
    :maxdepth: 2
    :numbered:
-coding
-gf
-help_gf
-index
-rs_decode
-start
-usage
+    coding
+    gf
+    help_gf
+    index
+    rs_decode
+    start
+    usage
