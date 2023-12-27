@@ -6,7 +6,7 @@ Welcome to Berlekamp–Massey  documentation!
 В нашем проекте реализована алгебра полей Галуа, а так же кодирование/декодирование с помощью алгоритма Берлекэмпа — Мэсси.
 
  :doc:`start` секция содержит информацию как запустить проект.
- 
+
 .. note::
 
    This project is under active development.
@@ -15,6 +15,10 @@ Contents
 --------
 
 .. toctree::
+   :maxdepth: 2
+   :numbered:
 
    start
-   api
+   Galua Fields
+   code
+   encode

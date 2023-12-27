@@ -1,0 +1,21 @@
+Welcome to Berlekamp–Massey  documentation!
+===================================
+
+**Алгоритм Берлекэмпа — Мэсси** - алгоритм поиска кратчайшего регистра сдвига с линейной обратной связью для поданной на вход бинарной последовательности. Также алгоритм позволяет найти минимальный многочлен поданной на вход линейной рекуррентной последовательности над произвольным полем.
+that creates recipes mixing random ingredients.
+
+Check out the :doc:`usage` section for further information, including
+how to :ref:`installation` the project.
+
+.. note::
+
+   This project is under active development.
+
+Contents
+--------
+
+.. toctree::
+
+   usage
+   api
+
