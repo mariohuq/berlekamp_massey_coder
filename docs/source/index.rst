@@ -1,20 +1,20 @@
-.. test_rst documentation master file, created by
-   sphinx-quickstart on Wed Dec 27 03:42:03 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Welcome to Berlekamp–Massey  documentation!
+===========================================
 
-Welcome to test_rst's documentation!
-====================================
+**Алгоритм Берлекэмпа — Мэсси** - алгоритм поиска кратчайшего регистра сдвига с линейной обратной связью для поданной на вход бинарной последовательности. Также алгоритм позволяет найти минимальный многочлен поданной на вход линейной рекуррентной последовательности над произвольным полем.
+
+В нашем проекте реализована алгебра полей Галуа, а так же кодирование/декодирование с помощью алгоритма Берлекэмпа — Мэсси.
+
+ :doc:`start` секция содержит информацию как запустить проект.
+ 
+.. note::
+
+   This project is under active development.
+
+Contents
+--------
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   start
+   api
