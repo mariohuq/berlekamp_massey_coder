@@ -11,16 +11,8 @@ Welcome to Berlekamp–Massey  documentation!
 
    This project is under active development.
 
-Contents
---------
+Contents:
 
-.. toctree::
-   :maxdepth: 2
-   :numbered:
-    coding
-    gf
-    help_gf
-    index
-    rs_decode
-    start
-    usage
+ .. toctree::
+    :maxdepth: 2
+
