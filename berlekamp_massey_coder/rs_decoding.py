@@ -1,7 +1,6 @@
 from . import gf
 from . import help_gf
-
-
+from .gf import Polynomial
 
 
 def rs_calc_syndromes(msg, red_code_len):  # вычисляет синдромы ошибок
@@ -21,14 +20,13 @@ def rs_find_errarta_locator(err_pos):
     # возвращает многочлен локатора ошибок
 
     # находит локаторы ошибок
-    e_loc = [1]
-    one = [1]
-    for i in range(len(err_pos)):
+    e_loc = Polynomial([1])
+
+    for pos in err_pos:
         # since we know location of the error, we can find L(x) as
         # L(x) = \prod (1 + x*alpha^(i))
-        temp = [gf.pow(help_gf.GENERATOR, err_pos[i]), 0]
-        add = gf.poly_add(one, temp)
-        e_loc = gf.poly_mult(e_loc, add)
+
+        e_loc *= Polynomial([gf.pow(help_gf.GENERATOR, pos), 1])
 
     return e_loc
 
@@ -37,9 +35,9 @@ def rs_find_error_evaluator(synd, err_loc, err_loc_size):
     # synd - многочлен синдромов ошибок (вектор int)
     # err_loc - многочлен локатора ошибок L(x)
     # err_loc_size - размер L(x)
-    poly_mul = gf.poly_mult(synd, err_loc)
-    remainder = poly_mul[-err_loc_size:]
-    return remainder
+    poly_mul = Polynomial(synd) * err_loc
+    remainder = poly_mul.coefficients[-err_loc_size:]
+    return Polynomial(remainder)
 
 
 def rs_correct_errata(msg_in, synd, err_pos):
@@ -51,7 +49,7 @@ def rs_correct_errata(msg_in, synd, err_pos):
     # находит полиномиал ошибки W(x)
     synd.reverse()
     err_eval = rs_find_error_evaluator(synd, err_loc, len(err_loc))
-    err_eval.reverse()
+
 
     # x - сохранит положение ошибок
     # нам нужно получить многочлен определения местоположения ошибки X из позиций ошибок в err_pos
@@ -59,8 +57,6 @@ def rs_correct_errata(msg_in, synd, err_pos):
     x = [gf.pow(help_gf.GENERATOR, -(255 - pos)) for pos in coef_pos]
 
     E = [0] * len(msg_in)  # сохранит значения, которые необходимо исправить в исходном сообщении с ошибками
-
-    err_eval.reverse()
 
     for i in range(len(x)):
         x_i_inv = gf.inverse(x[i])
@@ -88,7 +84,7 @@ def rs_correct_errata(msg_in, synd, err_pos):
         # Деление оценки погрешности на производную от локатора ошибок
         E[err_pos[i]] = magnitude  # возвращает нам значение ошибки, то есть значение для восстановления символа
 
-    msg_in = gf.poly_add(msg_in, E)  # C(x) = C'(x) + E(x) (xor)
+    msg_in += Polynomial(E)  # C(x) = C'(x) + E(x) (xor)
     return msg_in
 
 
@@ -96,8 +92,8 @@ def rs_find_error_locator(synd, red_code_len):
     # synd - многочлен синдромов ошибок (вектор int)
     # red_code_len - количество символов, представляющих избыточный код
     # возвращает многочлен локатора ошибок L(x)
-    err_loc = [1]  # многочлен определения ошибки C(x)
-    old_loc = [1]  # многочлен локатора ошибок предыдущей итерации
+    err_loc = Polynomial([1])  # многочлен определения ошибки C(x)
+    old_loc = Polynomial([1])  # многочлен локатора ошибок предыдущей итерации
 
     synd_shift = len(synd) - red_code_len
 
@@ -111,10 +107,10 @@ def rs_find_error_locator(synd, red_code_len):
         delta = synd[k]
 
         for j in range(1, len(err_loc)):
-            delta ^= gf.mult(err_loc[len(err_loc) - 1 - j], synd[k - j])  # delta = Sn + C1*Sn-1 +..+ Cj*Sk-j
+            delta ^= gf.mult(err_loc.coefficients[len(err_loc) - 1 - j], synd[k - j])  # delta = Sn + C1*Sn-1 +..+ Cj*Sk-j
 
         # сдвигаем многочлены, чтобы вычислить следующую степень
-        old_loc.append(0)
+        old_loc.coefficients.append(0)
 
         if delta != 0:  # if дельта == 0, алгоритм предполагает, что C(x) и L верны на данный момент, и продолжает
             if len(old_loc) > len(err_loc):  # ~2*L <= k + erase_count
@@ -124,10 +120,10 @@ def rs_find_error_locator(synd, red_code_len):
                 err_loc = new_loc
 
             # Обновление с учетом несоответствия
-            err_loc = gf.poly_add(err_loc, gf.poly_scale(old_loc, delta))
+            err_loc += gf.poly_scale(old_loc, delta)
 
-    while err_loc and err_loc[0] == 0:
-        err_loc.pop(0)
+    while len(err_loc) and err_loc.coefficients[0] == 0:
+        err_loc.coefficients.pop(0)
 
     errs = len(err_loc) - 1
     if errs * 2 > red_code_len:
@@ -161,7 +157,7 @@ def rs_decode_msg(msg_in, red_code_len):
     if len(msg_in) > 255:
         raise ValueError("Message is too long")
 
-    msg_out = msg_in
+    msg_out = Polynomial(msg_in)
 
     # чтобы мы не подсчитывали многочлен генератора несколько раз и не делили,
     # мы сразу подсчитываем многочлен синдрома ошибки, и если в нем нет хотя бы
@@ -175,7 +171,7 @@ def rs_decode_msg(msg_in, red_code_len):
     # Найдите многочлен локатора ошибок L(x)
     err_loc = rs_find_error_locator(synd, red_code_len)
 
-    err_loc.reverse()
+    err_loc.coefficients.reverse()
 
     # Найдите вектор индекса символов, которые необходимо исправить
     err_pos = rs_find_errors(err_loc, len(msg_out))
@@ -193,4 +189,4 @@ def rs_decode_msg(msg_in, red_code_len):
     max_synd = max(synd)
     if max_synd > 0:
         raise ValueError("Could not correct message")
-    return msg_out
+    return msg_out.coefficients

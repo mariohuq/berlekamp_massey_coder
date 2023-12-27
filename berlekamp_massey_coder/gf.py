@@ -62,47 +62,78 @@ def inverse(x):
     return exp_[255 - log_[x]]
 
 
-def poly_scale(p, x):  # умножение вектора на константу
-    res = [mult(coeff, x) for coeff in p]
-    return res
+class Polynomial:
+    def __init__(self, iterable):
+        self.coefficients = [int(x) for x in iterable]
 
+    def __len__(self):
+        return len(self.coefficients)
 
-def poly_add(p, q):  # сложение полиномов
-    res = [0] * max(len(p), len(q))
+    def __add__(self, other):
+        p = self.coefficients
+        q = other.coefficients
+        res = [0] * max(len(p), len(q))
 
-    for i in range(len(p)):
-        res[i + len(res) - len(p)] = p[i]
-
-    for i in range(len(q)):
-        res[i + len(res) - len(q)] = add(res[i + len(res) - len(q)], q[i])
-
-    return res
-
-
-def poly_mult(p, q):
-    res = [0] * (len(p) + len(q) - 1)
-
-    for j in range(len(q)):
         for i in range(len(p)):
-            res[i + j] = add(res[i + j], mult(p[i], q[j]))
+            res[i + len(res) - len(p)] = p[i]
 
-    return res
+        for i in range(len(q)):
+            res[i + len(res) - len(q)] = add(res[i + len(res) - len(q)], q[i])
+
+        return Polynomial(res)
+
+    def __mul__(self, other):
+        p = self.coefficients
+        q = other.coefficients
+        res = [0] * (len(p) + len(q) - 1)
+
+        for j in range(len(q)):
+            for i in range(len(p)):
+                res[i + j] = add(res[i + j], mult(p[i], q[j]))
+
+        return Polynomial(res)
+
+    def __imul__(self, other):
+        self.coefficients = (self * other).coefficients
+        return self
+
+    def __iadd__(self, other):
+        self.coefficients = (self + other).coefficients
+        return self
+
+    def __divmod__(self, other):
+        dividend = self.coefficients
+        divisor = other.coefficients
+
+        remainder = dividend.copy()
+
+        for i in range(len(dividend) - (len(divisor) - 1)):
+            coef = remainder[i]
+            if coef != 0:
+                for j in range(1, len(divisor)):
+                    if divisor[j] != 0:
+                        remainder[i + j] = sub(remainder[i + j], mult(divisor[j], coef))
+
+        quotient = remainder[:len(dividend) - (len(divisor) - 1)]
+        remainder = remainder[len(dividend) - (len(divisor) - 1):]
+
+        return Polynomial(quotient), Polynomial(remainder)
+
+    def __mod__(self, other):
+        _, rem = divmod(self, other)
+        return rem
+
+    def __call__(self, x):
+        poly = self.coefficients
+        y = poly[0]
+        for i in range(1, len(poly)):
+            y = add(mult(y, x), poly[i])
+        return y
 
 
-def poly_div(dividend, divisor):
-    remainder = dividend.copy()
-
-    for i in range(len(dividend) - (len(divisor) - 1)):
-        coef = remainder[i]
-        if coef != 0:
-            for j in range(1, len(divisor)):
-                if divisor[j] != 0:
-                    remainder[i + j] = sub(remainder[i + j], mult(divisor[j], coef))
-
-    quotient = remainder[:len(dividend) - (len(divisor) - 1)]
-    remainder = remainder[len(dividend) - (len(divisor) - 1):]
-
-    return quotient, remainder
+def poly_scale(p, x):  # умножение вектора на константу
+    res = [mult(coeff, x) for coeff in p.coefficients]
+    return Polynomial(res)
 
 
 '''# Пример входных данных
@@ -118,7 +149,4 @@ print("Остаток:", remainder)'''
 
 
 def poly_eval(poly, x):
-    y = poly[0]
-    for i in range(1, len(poly)):
-        y = add(mult(y, x), poly[i])
-    return y
+    return poly(x)
