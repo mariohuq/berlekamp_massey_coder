@@ -1,4 +1,4 @@
  Docs
 ======
-Here -> https://sphinx-ru.readthedocs.io/ru/latest/sphinx-markup.html
+Here -> https://berlekamp-massey-coder.readthedocs.io/ru/latest/rs_decode.html
 -------------------------------------------------------------
