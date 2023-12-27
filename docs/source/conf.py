@@ -2,15 +2,15 @@
 
 # -- Project information
 
-<<<<<<< HEAD
+
 project = 'berlekamp_massey_coder'
 author = 'Kvazistam'
 
-=======
+
 project = 'Kursovaya'
 copyright = '2023, Kvazistam'
 author = 'Kvazistam'
->>>>>>> refs/remotes/origin/main
+
 
 release = '0.1'
 version = '0.1.0'

@@ -11,8 +11,7 @@ Welcome to Berlekamp–Massey  documentation!
 
    This project is under active development.
 
-Contents
---------
+Contents:
 
 .. toctree::
    start
@@ -22,4 +21,4 @@ Contents
    rs_decode
    
 
-   
+
