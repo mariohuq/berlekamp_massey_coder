@@ -14,7 +14,6 @@ Welcome to Berlekamp–Massey  documentation!
 Contents:
 
  .. toctree::
-    index
     coding
     gf
     help_gf
