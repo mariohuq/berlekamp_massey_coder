@@ -6,7 +6,7 @@
 project = 'berlekamp_massey_coder'
 author = 'Kvazistam'
 
-=======
+
 project = 'Kursovaya'
 copyright = '2023, Kvazistam'
 author = 'Kvazistam'
