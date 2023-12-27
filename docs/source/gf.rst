@@ -1,30 +1,27 @@
-gf.py
+Модуль gf(Galua field)
 -----
 
 В файле gf.py реализована алгебрна полей Галуа
 
-* exp_ - список значений экспоненты от элементов поля. exp_[x]= e\:sup:`x`\
+* exp_ - список значений экспоненты от элементов поля. exp_[x]= e \:sup:`x`\
 * log_ - список значений логарифма от элементов поля. log_[x] = log(x)
 * add(x,y) - функция сложения элементов поля Галуа. Побитовый xor.
 
 .. code-block:: python
-   :emphasize-lines: 
 
    def add(x,y):
        return x^y
 
-*sub(x,y) - функция вычитания элементов поля Галуа.
+* sub(x,y) - функция вычитания элементов поля Галуа.
 
 .. code-block:: python
-   :emphasize-lines:
 
    def sub(x,y):
        return x^y
 
-*mult(x,y) - функция умножения элементов поля Галуа.
+* mult(x,y) - функция умножения элементов поля Галуа.
 
 .. code-block:: python
-   :emphasize-lines: 
 
    def mult(x, y):
     if x == 0 or y == 0:
@@ -34,7 +31,6 @@ gf.py
 * div(x,y) - функция деления элементов поля Галуа.
 
 .. code-block:: python
-   :emphasize-lines:
 
    def div(x, y):
     if y == 0:
@@ -47,7 +43,6 @@ gf.py
 * pow(x,y) - функция возведение в степень элементов поля Галуа.
 
 .. code-block:: python
-   :emphasize-lines: 
 
    def pow(x, power):
     i = log_[x]
@@ -58,13 +53,11 @@ gf.py
 * inverse(x,y) - функция инвресии элементов поля Галуа.
 
 .. code-block:: python
-   :emphasize-lines: 
 
     def inverse(x):
         return exp_[255 - log_[x]]
 * poly_scale(p,x) - умножение вектора на константу
 .. code-block:: python
-   :emphasize-lines: 
 
     def poly_scale(p, x):  
         res = [mult(coeff, x) for coeff in p]
@@ -72,7 +65,6 @@ gf.py
 
 * poly_add(p,q) -  сложение полиномов.
 .. code-block:: python
-   :emphasize-lines: 
     def poly_add(p, q):  # сложение полиномов
         res = [0] * max(len(p), len(q))
 
@@ -86,7 +78,6 @@ gf.py
 
 * poly_mult(p,q) - умножение полиномов.
 .. code-block:: python
-   :emphasize-lines: 
     def poly_mult(p, q):
         res = [0] * (len(p) + len(q) - 1)
 
@@ -98,7 +89,6 @@ gf.py
 
 * poly_div(dividend, divisor) -  деление полиномов. quotient - целая часть, remainder - остаток
 .. code-block:: python
-   :emphasize-lines: 
 
     def poly_div(dividend, divisor):
         remainder = dividend.copy()
@@ -130,8 +120,7 @@ print("Остаток:", remainder)'''
 
 
 * poly_eval(poly,x)- 
-.. code-block:: python
-   :emphasize-lines: 
+.. code-block:: python 
     def poly_eval(poly, x):
         y = poly[0]
         for i in range(1, len(poly)):

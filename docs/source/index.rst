@@ -15,10 +15,11 @@ Contents
 --------
 
 .. toctree::
-   :maxdepth: 2
-   :numbered:
-
    start
-   Galua Fields
-   code
-   encode
+   gf
+   help_gf
+   coding
+   rs_decode
+   
+
+   
